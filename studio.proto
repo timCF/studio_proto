@@ -197,7 +197,17 @@ message SessionTemplate {
 //	html request - response
 //
 
-message ResponseState {
+
+enum CMD {
+	CMD_get_state = 1;
+}
+
+enum ClientKind {
+	CK_superadmin = 1;
+	CK_admin = 2;
+}
+
+message FullState {
 	required string hash = 1;
 	repeated Admin admins = 2;
 	repeated Location locations = 3;
@@ -209,4 +219,26 @@ message ResponseState {
 	repeated Band bands = 9;
 	repeated Session sessions = 10;
 	repeated SessionTemplate sessions_template = 11;
+}
+
+enum ResponseStatus {
+	RS_ok_state = 1;
+	RS_ok_void = 2;
+	RS_error = 3;
+}
+
+// full generic request struct
+message Request {
+	required CMD cmd = 1;
+	required ClientKind client_kind = 2;
+	required string login = 3;
+	required string password = 4;
+	optional FullState subject = 5;
+}
+
+// full generic response struct
+message Response {
+	required ResponseStatus status = 1;
+	required string message = 2;
+	required FullState state = 3;
 }
