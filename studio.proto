@@ -227,6 +227,7 @@ enum ResponseStatus {
 	RS_ok_void = 2;
 	RS_error = 3;
 	RS_notice = 4;
+	RS_refresh = 5;
 }
 
 // full generic request struct
