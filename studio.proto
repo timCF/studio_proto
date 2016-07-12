@@ -200,6 +200,7 @@ message SessionTemplate {
 
 enum CMD {
 	CMD_get_state = 1;
+	CMD_ping = 2;
 }
 
 enum ClientKind {
@@ -225,6 +226,7 @@ enum ResponseStatus {
 	RS_ok_state = 1;
 	RS_ok_void = 2;
 	RS_error = 3;
+	RS_notice = 4;
 }
 
 // full generic request struct
