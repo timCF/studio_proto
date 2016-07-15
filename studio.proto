@@ -201,6 +201,8 @@ message SessionTemplate {
 enum CMD {
 	CMD_get_state = 1;
 	CMD_ping = 2;
+	CMD_new_session = 3;
+	CMD_edit_session = 4;
 }
 
 enum ClientKind {
