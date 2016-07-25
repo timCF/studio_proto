@@ -228,7 +228,7 @@ enum ResponseStatus {
 	RS_ok_state = 1;
 	RS_ok_void = 2;
 	RS_error = 3;
-	RS_notice = 4;
+	RS_notice = 4; // NOTE : this status has side-effect ( close popups )
 	RS_refresh = 5;
 }
 
