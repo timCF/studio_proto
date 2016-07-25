@@ -203,6 +203,8 @@ enum CMD {
 	CMD_ping = 2;
 	CMD_new_session = 3;
 	CMD_edit_session = 4;
+	CMD_band_new_edit = 5;
+	CMD_band_disable = 6;
 }
 
 enum ClientKind {
