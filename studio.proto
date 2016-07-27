@@ -205,6 +205,8 @@ enum CMD {
 	CMD_edit_session = 4;
 	CMD_band_new_edit = 5;
 	CMD_band_disable = 6;
+	CMD_week_template_new_edit = 7;
+	CMD_week_template_disable = 8;
 }
 
 enum ClientKind {
