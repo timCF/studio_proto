@@ -234,6 +234,8 @@ enum ResponseStatus {
 	RS_error = 3;
 	RS_notice = 4; // NOTE : this status has side-effect ( close popups )
 	RS_refresh = 5;
+	RS_info = 6;
+	RS_warn = 7;
 }
 
 // full generic request struct
