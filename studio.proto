@@ -213,6 +213,7 @@ enum CMD {
 enum ClientKind {
 	CK_superadmin = 1;
 	CK_admin = 2;
+	CK_observer = 3;
 }
 
 message FullState {
