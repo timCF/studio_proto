@@ -170,6 +170,7 @@ message Session {
 	required uint64 band_id = 7;
 	required bool callback = 8;
 	required SessionStatus status = 9;
+	// cash in
 	required uint64 amount = 10;
 	required string description = 11;
 	required SessionOrderedBy ordered_by = 12;
@@ -177,8 +178,8 @@ message Session {
 	required uint64 admin_id_close = 14;
 	required uint64 transaction_id = 15;
 	optional uint64 stamp = 16;
-	// if admin want custom price ( not auto calculated )
-	optional uint64 price = 17;
+	// sum price for session
+	required uint64 price = 17;
 }
 
 message SessionTemplate {
