@@ -257,6 +257,13 @@ message Statistics {
 	required uint64 sessions_cancel_hard = 7;
 }
 
+message StatisticsRequest {
+	required uint64 time_from = 1;
+	required uint64 time_to = 2;
+	optional uint64 location_id = 3;
+	optional uint64 room_id = 4;
+}
+
 // full generic request struct
 message Request {
 	required CMD cmd = 1;
@@ -264,6 +271,7 @@ message Request {
 	required string login = 3;
 	required string password = 4;
 	optional FullState subject = 5;
+	optional StatisticsRequest statistics = 6;
 }
 
 // full generic response struct
