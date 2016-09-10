@@ -211,6 +211,7 @@ enum CMD {
 	CMD_week_template_new_edit = 7;
 	CMD_week_template_disable = 8;
 	CMD_week_template_new_edit_from_session = 9;
+	CMD_statistics = 10;
 }
 
 enum ClientKind {
@@ -241,6 +242,19 @@ enum ResponseStatus {
 	RS_refresh = 5;
 	RS_info = 6;
 	RS_warn = 7;
+	RS_statistics = 8;
+}
+
+message Statistics {
+	// sum of prices of all ended sessions
+	required int64 cash_prices = 1;
+	// real cash input to cashbox
+	required int64 cash_input = 2;
+	required uint64 sessions_all = 3;
+	required uint64 sessions_opened = 4;
+	required uint64 sessions_closed = 5;
+	required uint64 sessions_cancel_soft = 6;
+	required uint64 sessions_cancel_hard = 7;
 }
 
 // full generic request struct
@@ -257,4 +271,5 @@ message Response {
 	required ResponseStatus status = 1;
 	required string message = 2;
 	required FullState state = 3;
+	optional Statistics statistics = 4;
 }
