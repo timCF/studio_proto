@@ -194,7 +194,7 @@ message SessionTemplate {
 	required uint64 admin_id = 9;
 	required bool enabled = 10;
 	optional uint64 stamp = 11;
-	required uint64 acive_from = 12;
+	required uint64 active_from = 12;
 }
 
 //
