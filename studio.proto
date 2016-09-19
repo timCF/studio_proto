@@ -281,4 +281,5 @@ message Response {
 	required string message = 2;
 	required FullState state = 3;
 	optional Statistics statistics = 4;
+	repeated uint64 destination_location_id = 5;
 }
