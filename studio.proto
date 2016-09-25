@@ -34,6 +34,7 @@ enum TransactionKind {
 	TK_buy = 9;
 	TK_repair = 10;
 	TK_sell = 11;
+	TK_bonus = 12;
 }
 
 message Contacts {
