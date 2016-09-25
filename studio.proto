@@ -126,6 +126,7 @@ message Transaction {
 	required string description = 8;
 	required uint64 admin_id = 9;
 	optional uint64 stamp = 10;
+	required uint64 location_id = 11;
 }
 
 //
