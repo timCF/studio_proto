@@ -214,6 +214,7 @@ enum CMD {
 	CMD_week_template_disable = 8;
 	CMD_week_template_new_edit_from_session = 9;
 	CMD_statistics = 10;
+	CMD_new_transaction = 11;
 }
 
 enum ClientKind {
