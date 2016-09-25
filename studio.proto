@@ -259,6 +259,12 @@ message Statistics {
 	required uint64 sessions_closed = 5;
 	required uint64 sessions_cancel_soft = 6;
 	required uint64 sessions_cancel_hard = 7;
+	// transactions for location(s)
+	required int64 transactions_cash_prices = 8;
+	required int64 transactions_cash_input = 9;
+	// all cash
+	required int64 all_cash_prices = 10;
+	required int64 all_cash_input = 11;
 }
 
 message StatisticsRequest {
