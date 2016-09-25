@@ -120,7 +120,7 @@ message Transaction {
 	required TransactionKind kind = 2;
 	required uint64 subject_id = 3;
 	required uint64 subject_quantity = 4;
-	required uint64 amount = 5;
+	required int64 amount = 5;
 	required uint64 cash_in = 6;
 	required uint64 cash_out = 7;
 	required string description = 8;
