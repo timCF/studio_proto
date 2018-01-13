@@ -1,3 +1,4 @@
+syntax = "proto3";
 package lemooor.studio;
 
 //
@@ -5,36 +6,36 @@ package lemooor.studio;
 //
 
 enum BandKind {
-	BK_default = 1;
-	BK_base = 2;
-	BK_cover = 3;
-	BK_education = 4;
+	BK_default = 0;
+	BK_base = 1;
+	BK_cover = 2;
+	BK_education = 3;
 }
 
 enum WeekDay {
-	WD_default = 1;
-	WD_1 = 2;
-	WD_2 = 3;
-	WD_3 = 4;
-	WD_4 = 5;
-	WD_5 = 6;
-	WD_6 = 7;
-	WD_7 = 8;
+	WD_default = 0;
+	WD_1 = 1;
+	WD_2 = 2;
+	WD_3 = 3;
+	WD_4 = 4;
+	WD_5 = 5;
+	WD_6 = 6;
+	WD_7 = 7;
 }
 
 enum TransactionKind {
-	TK_band_room = 1;
-	TK_band_instrument = 2;
-	TK_band_deposit = 3;
-	TK_band_punishment = 4;
-	TK_wage_base = 5;
-	TK_wage_bonus = 6;
-	TK_wage_punishment = 7;
-	TK_rent = 8;
-	TK_buy = 9;
-	TK_repair = 10;
-	TK_sell = 11;
-	TK_bonus = 12;
+	TK_band_room = 0;
+	TK_band_instrument = 1;
+	TK_band_deposit = 2;
+	TK_band_punishment = 3;
+	TK_wage_base = 4;
+	TK_wage_bonus = 5;
+	TK_wage_punishment = 6;
+	TK_rent = 7;
+	TK_buy = 8;
+	TK_repair = 9;
+	TK_sell = 10;
+	TK_bonus = 11;
 }
 
 message Contacts {
@@ -50,54 +51,54 @@ message Contacts {
 //
 
 message Admin {
-	optional uint64 id = 1;
-	required string name = 2;
-	required Contacts contacts = 3;
-	required string login = 4;
-	required string password = 5;
-	required bool enabled = 6;
-	optional uint64 stamp = 7;
+	uint64 id = 1;
+	string name = 2;
+	Contacts contacts = 3;
+	string login = 4;
+	string password = 5;
+	bool enabled = 6;
+	uint64 stamp = 7;
 }
 
 message Location {
-	optional uint64 id = 1;
-	required string name = 2;
-	required string description = 3;
-	required bool enabled = 4;
-	optional uint64 stamp = 5;
+	uint64 id = 1;
+	string name = 2;
+	string description = 3;
+	bool enabled = 4;
+	uint64 stamp = 5;
 }
 
 message Room {
-	optional uint64 id = 1;
-	required string name = 2;
-	required uint64 location_id = 3;
-	required string color = 4;
-	required string description = 5;
-	required uint64 price_base = 6;
-	required bool enabled = 7;
-	optional uint64 stamp = 8;
+	uint64 id = 1;
+	string name = 2;
+	uint64 location_id = 3;
+	string color = 4;
+	string description = 5;
+	uint64 price_base = 6;
+	bool enabled = 7;
+	uint64 stamp = 8;
 }
 
 message DiscountConst {
-	optional uint64 id = 1;
-	required uint64 room_id = 2;
-	required BandKind band_kind = 3;
-	required uint32 number_from = 4;
-	required uint32 min_from = 5;
-	required WeekDay week_day = 6;
-	required uint64 amount = 7;
-	required bool fixprice = 8;
-	optional uint64 stamp = 9;
+	uint64 id = 1;
+	uint64 room_id = 2;
+	BandKind band_kind = 3;
+	uint32 number_from = 4;
+	uint32 min_from = 5;
+	WeekDay week_day = 6;
+	uint64 amount = 7;
+	bool fixprice = 8;
+	uint64 stamp = 9;
 }
 
 message Instrument {
-	optional uint64 id = 1;
-	required string name = 2;
-	required uint64 location_id = 3;
-	required string description = 4;
-	required uint64 price = 5;
-	required bool enabled = 6;
-	optional uint64 stamp = 7;
+	uint64 id = 1;
+	string name = 2;
+	uint64 location_id = 3;
+	string description = 4;
+	uint64 price = 5;
+	bool enabled = 6;
+	uint64 stamp = 7;
 }
 
 //
@@ -105,28 +106,28 @@ message Instrument {
 //
 
 message Stuff2Sell {
-	optional uint64 id = 1;
-	required string name = 2;
-	required uint64 location_id = 3;
-	required string description = 4;
-	required uint64 quantity = 5;
-	required uint64 price = 6;
-	required bool enabled = 7;
-	optional uint64 stamp = 8;
+	uint64 id = 1;
+	string name = 2;
+	uint64 location_id = 3;
+	string description = 4;
+	uint64 quantity = 5;
+	uint64 price = 6;
+	bool enabled = 7;
+	uint64 stamp = 8;
 }
 
 message Transaction {
-	optional uint64 id = 1;
-	required TransactionKind kind = 2;
-	required uint64 subject_id = 3;
-	required uint64 subject_quantity = 4;
-	required int64 amount = 5;
-	required uint64 cash_in = 6;
-	required uint64 cash_out = 7;
-	required string description = 8;
-	required uint64 admin_id = 9;
-	optional uint64 stamp = 10;
-	required uint64 location_id = 11;
+	uint64 id = 1;
+	TransactionKind kind = 2;
+	uint64 subject_id = 3;
+	uint64 subject_quantity = 4;
+	int64 amount = 5;
+	uint64 cash_in = 6;
+	uint64 cash_out = 7;
+	string description = 8;
+	uint64 admin_id = 9;
+	uint64 stamp = 10;
+	uint64 location_id = 11;
 }
 
 //
@@ -134,69 +135,69 @@ message Transaction {
 //
 
 message Band {
-	optional uint64 id = 1;
-	required string name = 2;
-	required string person = 3;
-	required Contacts contacts = 4;
-	required BandKind kind = 5;
-	required string description = 6;
-	required int64 balance = 7;
-	required uint64 admin_id = 8;
-	required bool can_order = 9;
-	required bool enabled = 10;
-	optional uint64 stamp = 11;
+	uint64 id = 1;
+	string name = 2;
+	string person = 3;
+	Contacts contacts = 4;
+	BandKind kind = 5;
+	string description = 6;
+	int64 balance = 7;
+	uint64 admin_id = 8;
+	bool can_order = 9;
+	bool enabled = 10;
+	uint64 stamp = 11;
 }
 
 enum SessionStatus {
-	SS_awaiting_last = 1;
-	SS_awaiting_first = 2;
-	SS_closed_auto = 3;
-	SS_closed_ok = 4;
-	SS_canceled_soft = 5;
-	SS_canceled_hard = 6;
+	SS_awaiting_last = 0;
+	SS_awaiting_first = 1;
+	SS_closed_auto = 2;
+	SS_closed_ok = 3;
+	SS_canceled_soft = 4;
+	SS_canceled_hard = 5;
 }
 
 enum SessionOrderedBy {
-	SO_auto = 1;
-	SO_admin = 2;
-	SO_self = 3;
+	SO_auto = 0;
+	SO_admin = 1;
+	SO_self = 2;
 }
 
 message Session {
-	optional uint64 id = 1;
-	required uint64 time_from = 2;
-	required uint64 time_to = 3;
-	required WeekDay week_day = 4;
-	required uint64 room_id = 5;
+	uint64 id = 1;
+	uint64 time_from = 2;
+	uint64 time_to = 3;
+	WeekDay week_day = 4;
+	uint64 room_id = 5;
 	repeated uint64 instruments_ids = 6;
-	required uint64 band_id = 7;
-	required bool callback = 8;
-	required SessionStatus status = 9;
+	uint64 band_id = 7;
+	bool callback = 8;
+	SessionStatus status = 9;
 	// cash in
-	required uint64 amount = 10;
-	required string description = 11;
-	required SessionOrderedBy ordered_by = 12;
-	required uint64 admin_id_open = 13;
-	required uint64 admin_id_close = 14;
-	required uint64 transaction_id = 15;
-	optional uint64 stamp = 16;
+	uint64 amount = 10;
+	string description = 11;
+	SessionOrderedBy ordered_by = 12;
+	uint64 admin_id_open = 13;
+	uint64 admin_id_close = 14;
+	uint64 transaction_id = 15;
+	uint64 stamp = 16;
 	// sum price for session
-	required uint64 price = 17;
+	uint64 price = 17;
 }
 
 message SessionTemplate {
-	optional uint64 id = 1;
-	required uint32 min_from = 2;
-	required uint32 min_to = 3;
-	required WeekDay week_day = 4;
-	required uint64 room_id = 5;
+	uint64 id = 1;
+	uint32 min_from = 2;
+	uint32 min_to = 3;
+	WeekDay week_day = 4;
+	uint64 room_id = 5;
 	repeated uint64 instruments_ids = 6;
-	required uint64 band_id = 7;
-	required string description = 8;
-	required uint64 admin_id = 9;
-	required bool enabled = 10;
-	optional uint64 stamp = 11;
-	required uint64 active_from = 12;
+	uint64 band_id = 7;
+	string description = 8;
+	uint64 admin_id = 9;
+	bool enabled = 10;
+	uint64 stamp = 11;
+	uint64 active_from = 12;
 }
 
 //
@@ -205,27 +206,27 @@ message SessionTemplate {
 
 
 enum CMD {
-	CMD_get_state = 1;
-	CMD_ping = 2;
-	CMD_new_session = 3;
-	CMD_edit_session = 4;
-	CMD_band_new_edit = 5;
-	CMD_band_disable = 6;
-	CMD_week_template_new_edit = 7;
-	CMD_week_template_disable = 8;
-	CMD_week_template_new_edit_from_session = 9;
-	CMD_statistics = 10;
-	CMD_new_transaction = 11;
+	CMD_get_state = 0;
+	CMD_ping = 1;
+	CMD_new_session = 2;
+	CMD_edit_session = 3;
+	CMD_band_new_edit = 4;
+	CMD_band_disable = 5;
+	CMD_week_template_new_edit = 6;
+	CMD_week_template_disable = 7;
+	CMD_week_template_new_edit_from_session = 8;
+	CMD_statistics = 9;
+	CMD_new_transaction = 10;
 }
 
 enum ClientKind {
-	CK_superadmin = 1;
-	CK_admin = 2;
-	CK_observer = 3;
+	CK_superadmin = 0;
+	CK_admin = 1;
+	CK_observer = 2;
 }
 
 message FullState {
-	required string hash = 1;
+	string hash = 1;
 	repeated Admin admins = 2;
 	repeated Location locations = 3;
 	repeated Room rooms = 4;
@@ -239,56 +240,56 @@ message FullState {
 }
 
 enum ResponseStatus {
-	RS_ok_state = 1;
-	RS_ok_void = 2;
-	RS_error = 3;
-	RS_notice = 4; // NOTE : this status has side-effect ( close popups )
-	RS_refresh = 5;
-	RS_info = 6;
-	RS_warn = 7;
-	RS_statistics = 8;
+	RS_ok_state = 0;
+	RS_ok_void = 1;
+	RS_error = 2;
+	RS_notice = 3; // NOTE : this status has side-effect ( close popups )
+	RS_refresh = 4;
+	RS_info = 5;
+	RS_warn = 6;
+	RS_statistics = 7;
 }
 
 message Statistics {
 	// sum of prices of all ended sessions
-	required int64 cash_prices = 1;
+	int64 cash_prices = 1;
 	// real cash input to cashbox
-	required int64 cash_input = 2;
-	required uint64 sessions_all = 3;
-	required uint64 sessions_opened = 4;
-	required uint64 sessions_closed = 5;
-	required uint64 sessions_cancel_soft = 6;
-	required uint64 sessions_cancel_hard = 7;
+	int64 cash_input = 2;
+	uint64 sessions_all = 3;
+	uint64 sessions_opened = 4;
+	uint64 sessions_closed = 5;
+	uint64 sessions_cancel_soft = 6;
+	uint64 sessions_cancel_hard = 7;
 	// transactions for location(s)
-	required int64 transactions_cash_prices = 8;
-	required int64 transactions_cash_input = 9;
+	int64 transactions_cash_prices = 8;
+	int64 transactions_cash_input = 9;
 	// all cash
-	required int64 all_cash_prices = 10;
-	required int64 all_cash_input = 11;
+	int64 all_cash_prices = 10;
+	int64 all_cash_input = 11;
 }
 
 message StatisticsRequest {
-	required uint64 time_from = 1;
-	required uint64 time_to = 2;
-	optional uint64 location_id = 3;
-	optional uint64 room_id = 4;
+	uint64 time_from = 1;
+	uint64 time_to = 2;
+	uint64 location_id = 3;
+	uint64 room_id = 4;
 }
 
 // full generic request struct
 message Request {
-	required CMD cmd = 1;
-	required ClientKind client_kind = 2;
-	required string login = 3;
-	required string password = 4;
-	optional FullState subject = 5;
-	optional StatisticsRequest statistics = 6;
+	CMD cmd = 1;
+	ClientKind client_kind = 2;
+	string login = 3;
+	string password = 4;
+	FullState subject = 5;
+	StatisticsRequest statistics = 6;
 }
 
 // full generic response struct
 message Response {
-	required ResponseStatus status = 1;
-	required string message = 2;
-	required FullState state = 3;
-	optional Statistics statistics = 4;
+	ResponseStatus status = 1;
+	string message = 2;
+	FullState state = 3;
+	Statistics statistics = 4;
 	repeated uint64 destination_location_id = 5;
 }
