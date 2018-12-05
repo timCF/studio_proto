@@ -4,40 +4,69 @@ package lemooor.studio;
 //	commons enums
 //
 
+// тип группы
 enum BandKind {
+	// любая
 	BK_default = 1;
+	// стандартная
 	BK_base = 2;
+	// кавер-группа
 	BK_cover = 3;
+	// индивидуальные занятия
 	BK_education = 4;
 }
 
+// день недели
 enum WeekDay {
+	// любой день
 	WD_default = 1;
+	// понедельник
 	WD_1 = 2;
+	// вторник
 	WD_2 = 3;
+	// среда
 	WD_3 = 4;
+	// четверг
 	WD_4 = 5;
+	// пятница
 	WD_5 = 6;
+	// суббота
 	WD_6 = 7;
+	// воскресенье
 	WD_7 = 8;
 }
 
+// тип денежной транзакции которая по какой-то причине не вошла в оплату 'message Session' (например оплата штрафов, депозиты итп)
 enum TransactionKind {
+	// аренда комнаты группой
 	TK_band_room = 1;
+	// аренда инструмента группой
 	TK_band_instrument = 2;
+	// депозит на счёт группы
 	TK_band_deposit = 3;
+	// штраф для группы
 	TK_band_punishment = 4;
+	// зарплата
 	TK_wage_base = 5;
+	// бонус к зарплате
 	TK_wage_bonus = 6;
+	// штраф к зарплате
 	TK_wage_punishment = 7;
+	// аренда помещения
 	TK_rent = 8;
+	// покупка оборудования
 	TK_buy = 9;
+	// ремонт оборудования
 	TK_repair = 10;
+	// продажа оборудования
 	TK_sell = 11;
+	// бонус
 	TK_bonus = 12;
 }
 
+// контакты
 message Contacts {
+	// обязателен хотя бы один номер телефона
 	repeated string phones = 1;
 	repeated string mails = 2;
 	repeated string social = 3;
@@ -49,52 +78,110 @@ message Contacts {
 // SUPERADMIN LEVEL
 //
 
+// админ репетиционной базы
 message Admin {
+	// id строки таблицы базы данных (во всех других структурах так же)
 	optional uint64 id = 1;
+	// имя (во всех других структурах так же)
 	required string name = 2;
+	// контакты (во всех других структурах так же)
 	required Contacts contacts = 3;
+	// логин (во всех других структурах так же)
 	required string login = 4;
+	// пароль (во всех других структурах так же)
 	required string password = 5;
+	// флаг означает можно ли использовать эту модель (во всех других структурах так же) сделано чтобы помечать неактивные записи, так как из базы ничего не удаляется
 	required bool enabled = 6;
+	// юникс тайм создания или последнего изменения (во всех других структурах так же)
 	optional uint64 stamp = 7;
 }
 
+// репетиционная база
 message Location {
 	optional uint64 id = 1;
 	required string name = 2;
+	// пояснение/описание (во всех других структурах так же)
 	required string description = 3;
 	required bool enabled = 4;
 	optional uint64 stamp = 5;
 }
 
+// комната репетиционной базы
 message Room {
 	optional uint64 id = 1;
 	required string name = 2;
+	// ссылка на 'message Location'
 	required uint64 location_id = 3;
+	// код цвета комнаты (3 пары шестнадцатеричных цифр)
 	required string color = 4;
 	required string description = 5;
+	// базовая цена за 3 часа аренды (без скидок и дополнительного оборудования)
 	required uint64 price_base = 6;
 	required bool enabled = 7;
 	optional uint64 stamp = 8;
 }
 
+// структура скидки
 message DiscountConst {
 	optional uint64 id = 1;
+	// ссылка на 'message Room' (скидка действует только для данной комнаты)
+	// 0 = любая комната
 	required uint64 room_id = 2;
+	// тип группы на который распространяется данная скидка
 	required BandKind band_kind = 3;
+	//
+	// максимальное количество репетиций (это структура 'message Session') включая желаемую к заказу репетицию
+	// приведённое к количеству стандартных 3-х часовых сетов (например 6-ти часовая будет считаться за две)
+	// со статусами SS_awaiting_first или SS_closed_ok во всех возможных 31-дневных окрестностях вокруг даты желаемой репетиции
+	//
+	// совсем упрощённо говоря - максимальное количество репетиций в месяц включая текущую
+	// реализация подсчёта в CRM
+	// https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L84-L102
+	//
+	// если это число репетиций больше либо рано 'number_from' - условие скидки выполнено
 	required uint32 number_from = 4;
+	// 'min_from' это время суток, выраженное в минутах, например 00:00 = 0, а 18:00 = 1080
+	// если время начала репетиции больше либо равно 'min_from' - условие скидки выполнено
 	required uint32 min_from = 5;
+	// день недели в который работает скидка
 	required WeekDay week_day = 6;
+	// 'amount' - количество денег, может означать 2 разные вещи в зависимости от флага 'fixprice':
+	// 1) fixprice = false, тогда amount - это размер скидки в расчёте на стандартный 3-х часовой сет (без доп оборудования)
+	// 2) fixprice = true, тогда amount - это и есть стоимость стандартного 3-х часовой сета (без доп оборудования)
 	required uint64 amount = 7;
+	// см выше
 	required bool fixprice = 8;
 	optional uint64 stamp = 9;
+	//
+	//	алгортм поиска правильной скидки
+	//
+	//	1) фильтруется общий список в соответствии с заданными условиями (room_id, band_kind, number_from, min_from, week_day)
+	//	https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L135-L139
+	//
+	//	2) отбрасываются скидки где room_id = 0 (то есть комната-любая), но только в том случае если после этого остаётся НЕ пустой список скидок
+	//	https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L140
+	//
+	//	3) отбрасываются скидки где week_day = WD_default (то есть день-любой), но только в том случае если после этого остаётся НЕ пустой список скидок
+	//	https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L141
+	//
+	//	4) выбирается максимальное значение min_from из всех оставшихся и оставляются только скидки с этим значением
+	//	https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L142
+	//
+	//	5) выбирается максимальное значение number_from из всех оставшихся и оставляются только скидки с этим значением
+	//	https://github.com/timCF/studio/blob/686619d306cd3052450ac98c53866964f0c4b05b/lib/utils.ex#L143
+	//
+	//	в итоге в списке остаётся одна и только одна правильная скидка!
 }
 
+
+// музыкальный инструмент в аренду
 message Instrument {
 	optional uint64 id = 1;
 	required string name = 2;
+	// ссылка на 'message Location'
 	required uint64 location_id = 3;
 	required string description = 4;
+	// цена за 3 часа аренды
 	required uint64 price = 5;
 	required bool enabled = 6;
 	optional uint64 stamp = 7;
@@ -104,6 +191,7 @@ message Instrument {
 //	SUPER ADMIN + ADMIN LEVEL
 //
 
+//	структура не используется
 message Stuff2Sell {
 	optional uint64 id = 1;
 	required string name = 2;
@@ -115,17 +203,26 @@ message Stuff2Sell {
 	optional uint64 stamp = 8;
 }
 
+// тип денежной транзакции которая по какой-то причине не вошла в оплату 'message Session' (например оплата штрафов, депозиты итп)
 message Transaction {
 	optional uint64 id = 1;
+	// тип транзакции
 	required TransactionKind kind = 2;
+	// ссылка на субъект транзакции (реализовано только для групп, поэтому фактически это ссылка на 'message Band')
 	required uint64 subject_id = 3;
+	// не используется
 	required uint64 subject_quantity = 4;
+	// сумма (цена) транзакции
 	required int64 amount = 5;
+	// денег внесено в систему (на баланс группы)
 	required uint64 cash_in = 6;
+	// денег выведено из системы (с баланса группы)
 	required uint64 cash_out = 7;
 	required string description = 8;
+	// ссылка на 'message Admin' - админ оформивший транзакцию
 	required uint64 admin_id = 9;
 	optional uint64 stamp = 10;
+	// ссылка на 'message Location'
 	required uint64 location_id = 11;
 }
 
@@ -133,69 +230,106 @@ message Transaction {
 //	ADMIN level
 //
 
+// музыкальный коллектив
 message Band {
 	optional uint64 id = 1;
 	required string name = 2;
+	// имя контактного лица
 	required string person = 3;
 	required Contacts contacts = 4;
 	required BandKind kind = 5;
 	required string description = 6;
+	// баланс группы
 	required int64 balance = 7;
+	// ссылка на 'message Admin' добавившего или изменившего группу
 	required uint64 admin_id = 8;
+	// не используется
 	required bool can_order = 9;
 	required bool enabled = 10;
 	optional uint64 stamp = 11;
 }
 
+// статус репетиции
 enum SessionStatus {
+	// последний в очереди на сет (в реальности пока не используется)
 	SS_awaiting_last = 1;
+	// репетиция заказана
 	SS_awaiting_first = 2;
+	// репетиция закрыта автоматически (в реальности пока не используется)
 	SS_closed_auto = 3;
+	// репетиция закрыта успешно
 	SS_closed_ok = 4;
+	// репетиция отменена мягко, в срок, без штрафа
 	SS_canceled_soft = 5;
+	// репетиция отменена жёстко, слишком поздно, со штрафом
 	SS_canceled_hard = 6;
 }
 
+// кем была заказана репетиция
 enum SessionOrderedBy {
+	// автоматически (постоянные клиенты)
 	SO_auto = 1;
+	// админом реп базы
 	SO_admin = 2;
+	// клиентом (не используется)
 	SO_self = 3;
 }
 
+// репетиция
 message Session {
 	optional uint64 id = 1;
+	// юникс тайм начала репетиции
 	required uint64 time_from = 2;
+	// юникс тайм конца репетиции
 	required uint64 time_to = 3;
 	required WeekDay week_day = 4;
+	// ссылка на 'message Room'
 	required uint64 room_id = 5;
+	// список ссылок на 'message Instrument'
 	repeated uint64 instruments_ids = 6;
+	// ссылка на 'message Band'
 	required uint64 band_id = 7;
+	// не используется
 	required bool callback = 8;
 	required SessionStatus status = 9;
 	// cash in
+	// количество денег внесённых за репетицию группой
 	required uint64 amount = 10;
 	required string description = 11;
 	required SessionOrderedBy ordered_by = 12;
+	// ссылка на 'message Admin' - администратор открывший репетицию
 	required uint64 admin_id_open = 13;
+	// ссылка на 'message Admin' - администратор закрывший репетицию
 	required uint64 admin_id_close = 14;
+	// не используется
 	required uint64 transaction_id = 15;
 	optional uint64 stamp = 16;
 	// sum price for session
+	// итоговая цена репетиции
 	required uint64 price = 17;
 }
 
+// шаблон репетиции для клиентов "на постоянке"
+// CRM будет автоматически пытаться заказывать репетиции соответствующе этому шаблону 24/7
 message SessionTemplate {
 	optional uint64 id = 1;
+	// время суток выраженное в минутах, начало репетиции
 	required uint32 min_from = 2;
+	// время суток выраженное в минутах, конец репетиции
 	required uint32 min_to = 3;
 	required WeekDay week_day = 4;
+	// ссылка на 'message Room'
 	required uint64 room_id = 5;
+	// список ссылок на 'message Instrument'
 	repeated uint64 instruments_ids = 6;
+	// ссылка на 'message Band'
 	required uint64 band_id = 7;
 	required string description = 8;
+	// ссылка на 'message Admin' - администратор зарегистрировавший/изменивший запись
 	required uint64 admin_id = 9;
 	required bool enabled = 10;
 	optional uint64 stamp = 11;
+	// юникс тайм начиная с которого CRM начнёт пытаться бронировать репетиции по этому шаблону
 	required uint64 active_from = 12;
 }
 
@@ -203,28 +337,45 @@ message SessionTemplate {
 //	html request - response
 //
 
-
+// команда, действие которое делает клиент
 enum CMD {
+	// получить текущее состояние базы данных
 	CMD_get_state = 1;
+	// пинг сервера для поддержания соединения
 	CMD_ping = 2;
+	// создать новую репетицию 'message Session'
 	CMD_new_session = 3;
+	// изменить репетицию 'message Session'
 	CMD_edit_session = 4;
+	// создать или изменить группу 'message Band'
 	CMD_band_new_edit = 5;
+	// деактивировать группу 'message Band'
 	CMD_band_disable = 6;
+	// создать/изменить шаблон для постоянной репетиции 'message SessionTemplate'
 	CMD_week_template_new_edit = 7;
+	// деактивировать шаблон для постоянной репетиции 'message SessionTemplate'
 	CMD_week_template_disable = 8;
+	// создать/изменить шаблон для постоянной репетиции 'message SessionTemplate' из окна обычной репетиции 'message Session'
 	CMD_week_template_new_edit_from_session = 9;
+	// запросить сводную статистику
 	CMD_statistics = 10;
+	// создать новую 'message Transaction'
 	CMD_new_transaction = 11;
 }
 
+// тип клиента
 enum ClientKind {
+	// суперадмин
 	CK_superadmin = 1;
+	// обычный админ
 	CK_admin = 2;
+	// наблюдатель (расписание на сайте)
 	CK_observer = 3;
 }
 
+// полное состояние базы данных
 message FullState {
+	// хеш-сумма состояния
 	required string hash = 1;
 	repeated Admin admins = 2;
 	repeated Location locations = 3;
@@ -238,17 +389,27 @@ message FullState {
 	repeated SessionTemplate sessions_template = 11;
 }
 
+// статус ответа
 enum ResponseStatus {
+	// ответ с новым состоянием базы данных
 	RS_ok_state = 1;
+	// пустой ответ
 	RS_ok_void = 2;
+	// ошибка с сообщением
 	RS_error = 3;
+	// попап с инфо-сообщением
 	RS_notice = 4; // NOTE : this status has side-effect ( close popups )
+	// на сервере изменилось состояние базы данных, можно обновлять состояние на клиенте
 	RS_refresh = 5;
+	// инфо-сообщение
 	RS_info = 6;
+	// инфо-сообщение
 	RS_warn = 7;
+	// ответ со сводной статистикой
 	RS_statistics = 8;
 }
 
+// сводная статистика CRM (не требуется для приложения)
 message Statistics {
 	// sum of prices of all ended sessions
 	required int64 cash_prices = 1;
@@ -267,6 +428,7 @@ message Statistics {
 	required int64 all_cash_input = 11;
 }
 
+// запрос сводной статистики CRM (не требуется для приложения)
 message StatisticsRequest {
 	required uint64 time_from = 1;
 	required uint64 time_to = 2;
@@ -275,16 +437,20 @@ message StatisticsRequest {
 }
 
 // full generic request struct
+// запрос CRM системе
 message Request {
 	required CMD cmd = 1;
 	required ClientKind client_kind = 2;
 	required string login = 3;
 	required string password = 4;
+	// 'message FullState' содержит объект данной команды
+	// например, если создаётся репетиция то там находится один объект 'message Session'
 	optional FullState subject = 5;
 	optional StatisticsRequest statistics = 6;
 }
 
 // full generic response struct
+// ответ от CRM системы
 message Response {
 	required ResponseStatus status = 1;
 	required string message = 2;
